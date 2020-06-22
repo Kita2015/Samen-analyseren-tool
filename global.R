@@ -24,6 +24,14 @@ library(purrr)
 library(sp)
 library(devtools)
 library(geoshaper)
+library(plotly)
+library(ggplot2)
+library(geoshaper)
+library(scales)
+library(Hmisc)
+library(gridExtra)
+library(plotly)
+library(reshape2)
 
 
 
@@ -35,10 +43,11 @@ source("selectReactiveComponent.R", local = TRUE)
 source("tabPanels.R", local = TRUE) 
 
 ## Initialise ----
-projectnaam <- "Hollandse Luchten"
+projectnaam <- "Boeren & Buren"
 file <- "HLL_voorbeeld_data.RDS" 
 
-choices <- c( "PM10 - gekalibreerd", "PM2.5 - gekalibreerd","PM10", "PM2.5") #set up choices for shiny app
+#choices <- c( "PM10 - gekalibreerd", "PM2.5 - gekalibreerd","PM10", "PM2.5") #set up choices for shiny app
+choices <- c( "pm10_kal", "pm25_kal")
 kleur_cat <- list('#42145f','#ffb612','#a90061','#777c00','#007bc7','#673327','#e17000','#39870c', '#94710a','#01689b','#f9e11e','#76d2b6','#d52b1e','#8fcae7','#ca005d','#275937','#f092cd')
 kleur_sensor <- "leeg"
 kleur_marker_sensor <- "#525252" # default kleur sensor

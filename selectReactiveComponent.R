@@ -12,11 +12,10 @@
 
 selectReactiveComponent <- function(input){ 
   
-comp <- switch(input$Var, 
-               "PM10" = "pm10",
-               "PM10 - gekalibreerd" = "pm10_kal",
-               "PM2.5" = "pm25",
-               "PM2.5 - gekalibreerd" = "pm25_kal")
-
+  comp <- switch(input$Var, 
+                 "pm10_kal" = "pm10_kal",
+                 "pm25_kal" = "pm25_kal")
+  
   return(comp)
 } 
+

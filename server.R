@@ -278,10 +278,80 @@ function(input, output, session){
   huidig_df <- data.frame('Selectie' =values$df[which(values$df$huidig),'kit_id'])
   })
   
-  # Create time plot vanuit openair ----
+  # Create time plot vanuit ggplot ----
+  output$grafiek <- renderPlotly({
+    
+    comp <- selectReactiveComponent(input)
+    selected_id <- values$df[which(values$df$selected & values$df$groep == geen_groep),'kit_id']
+    show_input <-input_df[which(input_df$kit_id %in% selected_id),]
+    
+    # Als er groepen zijn geselecteerd, bereken dan het gemiddelde
+    if (length(unique(values$df$groep))>1){
+      calc_groep_mean() # berekent groepsgemiddeldes
+      show_input <- merge(show_input,values$df_gem, all = T) }
+    
+    # Selecteer de juiste tijdreeks als aangegeven bij de slider
+    show_input <- selectByDate(mydata = show_input, start = values$startdatum, end = values$einddatum)
+    
+    # Zet het dataframe om zodat ggplot ermee overweg kan
+    show_input_melt <- melt(show_input,id.vars = c("kit_id","date","rh"), measure.vars =  c(comp) )
+    
+    # Zet de tjidszone met winter/zomertijd aan
+    #attr(show_input_melt$date ,"tzone") <- 'GMT'
+    
+    date_format_tz <- function(format = "%m-%d %H:%M", tz = "GMT") {
+      function(x) format(x, format, tz=tz)
+    }
+    
+    ## Create array for the colours
+    # get the unique kit_id and the color
+    kit_kleur <- unique(values$df[which(values$df$selected),c('kit_id','kleur','groep')])
+    
+    # Als er een groep is, zorg voor 1 rij van de groep, zodat er maar 1 kleur is
+    if (length(unique(kit_kleur$groep)>1)){
+      kit_kleur[which(kit_kleur$groep != geen_groep),'kit_id'] <- kit_kleur[which(kit_kleur$groep != geen_groep),'groep']
+      kit_kleur <- unique(kit_kleur)
+    }
+    
+    # Sort by kit_id
+    kit_kleur_sort <- kit_kleur[order(kit_kleur$kit_id),]
+    # create colour array
+    kleur_array <- kit_kleur_sort$kleur
+    
+    # Genereren van het line plot
+    
+    if(input$filter_rh){
+      
+      show_input_melt_rh <- show_input_melt[which(show_input_melt$rh < 97 & show_input_melt$rh != -999),]
+      
+      ggplotly(ggplot(data = show_input_melt_rh, aes(x = date, y = value, colour = kit_id)) +
+                 geom_line() +
+                 scale_color_manual(values = kleur_array) +
+                 labs(x = "Tijd", y = comp) +
+                 scale_x_datetime(labels = date_format_tz()) +
+                 theme_bw())
+      
+    }
+    
+    else{
+      ggplotly(ggplot(data = show_input_melt, aes(x = date, y = value, colour = kit_id)) +
+                 geom_line() +
+                 scale_color_manual(values = kleur_array) +
+                 labs(x = "Tijd", y = comp) +
+                 scale_x_datetime(labels = date_format_tz()) +
+                 theme_bw())
+      
+    }
+    
+  })
+  
+  ###
+  
+  # Create time plot vanuit openair ---- ##2020-06-18 deze grafiek staat uit
   output$timeplot <- renderPlot({
     
     comp <- selectReactiveComponent(input)
+    dates <- selectReactiveDates(input)
     selected_id <- values$df[which(values$df$selected & values$df$groep == geen_groep),'kit_id']
     show_input <-input_df[which(input_df$kit_id %in% selected_id),]
     
@@ -291,13 +361,14 @@ function(input, output, session){
       show_input <- merge(show_input,values$df_gem, all = T) }
     
     # if / else statement om correctie lml data toe te voegen ----
+    #alleen LML data <0 wordt getoond; dit om -999, -999.9 en -999.0 eruit te filteren
     if(comp == "pm10" || comp == "pm10_kal"){
-      try(timePlot(selectByDate(mydata = show_input,start = values$startdatum, end = values$einddatum),
+      try(timePlot(selectByDate(mydata = show_input[which(show_input$pm10_lml > 0),],start = dates()$start, end = dates()$end),
                    pollutant = c(comp, "pm10_lml"), wd = "wd", type = "kit_id", local.tz="Europe/Amsterdam"))
       # Call in try() zodat er geen foutmelding wordt getoond als er geen enkele sensor is aangeklikt 
     }
     else {
-      try(timePlot(selectByDate(mydata = show_input,start = values$startdatum, end = values$einddatum),
+      try(timePlot(selectByDate(mydata = show_input[which(show_input$pm25_lml > 0),],start = dates()$start, end = dates()$end),
                    pollutant = c(comp, "pm25_lml"), wd = "wd", type = "kit_id", local.tz="Europe/Amsterdam"))
       # Call in try() zodat er geen foutmelding wordt getoond als er geen enkele sensor is aangeklikt 
     }
@@ -307,6 +378,7 @@ function(input, output, session){
   output$calendar <- renderPlot({
     
     comp <- selectReactiveComponent(input)
+    dates <- selectReactiveDates(input)
     selected_id <- values$df[which(values$df$selected & values$df$groep == geen_groep),'kit_id']
     show_input <-input_df[which(input_df$kit_id %in% selected_id),]
     
@@ -315,15 +387,27 @@ function(input, output, session){
       calc_groep_mean() # berekent groepsgemiddeldes
       show_input <- merge(show_input,values$df_gem, all = T) }
     
-    try(calendarPlot(selectByDate(mydata = show_input, start = values$startdatum, end = values$einddatum),
-                     pollutant = comp, limits= c(0,150), cols = 'Purples', local.tz="Europe/Amsterdam")) 
-    # Call in try() zodat er geen foutmelding wordt getoond als er geen enkele sensor is aangeklikt 
+    if(input$filter_rh){
+      
+      show_input_rh <- show_input[which(show_input$rh < 97 & show_input$rh != -999),]    
+      
+      try(calendarPlot(selectByDate(mydata = show_input_rh, start = dates()$start, end = dates()$end),
+                       pollutant = comp, limits= c(0,150), cols = 'Purples', local.tz="Europe/Amsterdam")) 
+      # Call in try() zodat er geen foutmelding wordt getoond als er geen enkele sensor is aangeklikt 
+    }
+    
+    else{
+      try(calendarPlot(selectByDate(mydata = show_input, start = dates()$start, end = dates()$end),
+                       pollutant = comp, limits= c(0,150), cols = 'Purples', local.tz="Europe/Amsterdam")) 
+      # Call in try() zodat er geen foutmelding wordt getoond als er geen enkele sensor is aangeklikt 
+    }
   })
   
   # Create timevariation functie vanuit openair ----
   output$timevariation <- renderPlot({
     
     comp <- selectReactiveComponent(input)
+    dates <- selectReactiveDates(input)
     selected_id <- values$df[which(values$df$selected & values$df$groep == geen_groep),'kit_id']
     show_input <-input_df[which(input_df$kit_id %in% selected_id),]
     
@@ -347,7 +431,7 @@ function(input, output, session){
     # create colour array
     kleur_array <- kit_kleur_sort$kleur
     
-    try(timeVariation(selectByDate(mydata = show_input, start = values$startdatum, end = values$einddatum),
+    try(timeVariation(selectByDate(mydata = show_input, start = dates()$start, end = dates()$end),
                       pollutant = comp, normalise = FALSE, group = "kit_id",
                       alpha = 0.1, cols = kleur_array, local.tz="Europe/Amsterdam",
                       ylim = c(0,NA))) 
@@ -355,10 +439,11 @@ function(input, output, session){
     
   })
   
-  # Create pollutionrose functie vanuit openair ----
-  output$pollutionplot <- renderPlot({
+  # Create polarplot functie vanuit openair ----
+  output$polarplot <- renderPlot({
     
     comp <- selectReactiveComponent(input)
+    dates <- selectReactiveDates(input)
     selected_id <- values$df[which(values$df$selected & values$df$groep == geen_groep),'kit_id']
     show_input <-input_df[which(input_df$kit_id %in% selected_id),]    
     
@@ -367,10 +452,50 @@ function(input, output, session){
       calc_groep_mean() # berekent groepsgemiddeldes
       show_input <- merge(show_input,values$df_gem, all = T) }
     
+    if(input$filter_rh){
+      
+      show_input_rh <- show_input[which(show_input$rh < 97 & show_input$rh != -999),]
+      
+      try(polarPlot(selectByDate(mydata = show_input_rh,start = dates()$start, end = dates()$end),
+                    pollutant = comp, limits= c(0,50), wd = 'wd', type = 'kit_id' , local.tz="Europe/Amsterdam", cols = "default")) 
+    }
     
-    try(pollutionRose(selectByDate(mydata = show_input,start = values$startdatum, end = values$einddatum),
-                      pollutant = comp, wd = 'wd', ws = 'ws', type = 'kit_id' , local.tz="Europe/Amsterdam", cols = "Purples", statistic = 'prop.mean',breaks=c(0,20,60,100))) 
+    else{
+      
+      try(polarPlot(selectByDate(mydata = show_input,start = dates()$start, end = dates()$end),
+                    pollutant = comp, limits= c(0,50), wd = 'wd', type = 'kit_id' , local.tz="Europe/Amsterdam", cols = "default")) 
+      
+    }
+  })
+  
+  # Create pollutionrose functie vanuit openair ----
+  output$pollutionplot <- renderPlot({
     
+    comp <- selectReactiveComponent(input)
+    dates <- selectReactiveDates(input)
+    selected_id <- values$df[which(values$df$selected & values$df$groep == geen_groep),'kit_id']
+    show_input <-input_df[which(input_df$kit_id %in% selected_id),]    
+    
+    # Als er groepen zijn geselecteerd, bereken dan het gemiddelde
+    if (length(unique(values$df$groep))>1){
+      calc_groep_mean() # berekent groepsgemiddeldes
+      show_input <- merge(show_input,values$df_gem, all = T) }
+    
+    #als rh >= 97 eruit gefiltered moet worden
+    if(input$filter_rh){
+      
+      show_input_rh <- show_input[which(show_input$rh < 97 & show_input$rh != -999),]
+      
+      try(pollutionRose(selectByDate(mydata = show_input_rh, start = dates()$start, end = dates()$end),
+                        pollutant = comp, limits= c(0,50), wd = 'wd', ws = 'ws', type = 'kit_id' , local.tz="Europe/Amsterdam", cols = "Purples", statistic = 'prop.mean',breaks=c(0,20,60,100), annotate = FALSE)) 
+      
+    }
+    
+    else{
+      
+      try(pollutionRose(selectByDate(mydata = show_input,start = dates()$start, end = dates()$end),
+                        pollutant = comp, limits= c(0,50),  wd = 'wd', ws = 'ws', type = 'kit_id' , local.tz="Europe/Amsterdam", cols = "Purples", statistic = 'prop.mean',breaks=c(0,20,60,100), annotate = FALSE)) 
+    } 
   })
   
   
@@ -378,6 +503,7 @@ function(input, output, session){
   output$windplot <- renderPlot({
     
     comp <- selectReactiveComponent(input)
+    dates <- selectReactiveDates(input)
     selected_id <- values$df[which(values$df$selected & values$df$groep == geen_groep),'kit_id']
     show_input <-input_df[which(input_df$kit_id %in% selected_id),]    
     
@@ -386,17 +512,28 @@ function(input, output, session){
       calc_groep_mean() # berekent groepsgemiddeldes
       show_input <- merge(show_input,values$df_gem, all = T) }
     
+    if(input$filter_rh){
+      
+      show_input_rh <- show_input[which(show_input$rh < 97 & show_input$rh != -999),]
+      
+      try(windRose(selectByDate(mydata = show_input_rh,start = dates()$start, end = dates()$end),
+                   wd = 'wd', ws = 'ws', type = 'kit_id' , local.tz="Europe/Amsterdam", cols = "Purples", annotate = FALSE)) 
+      # Call in try() zodat er geen foutmelding wordt getoond als er geen enkele sensor is aangeklikt 
+    }
     
-    try(windRose(selectByDate(mydata = show_input,start = values$startdatum, end = values$einddatum),
-                 wd = 'wd', ws = 'ws', type = 'kit_id' , local.tz="Europe/Amsterdam", cols = "Purples")) 
-    # Call in try() zodat er geen foutmelding wordt getoond als er geen enkele sensor is aangeklikt 
-    
+    else{
+      
+      try(windRose(selectByDate(mydata = show_input,start = dates()$start, end = dates()$end),
+                   wd = 'wd', ws = 'ws', type = 'kit_id' , local.tz="Europe/Amsterdam", cols = "Purples", annotate = FALSE)) 
+      
+    }
   })
   
   # Create percentilerose functie vanuit openair ----
   output$percentileplot <- renderPlot({
     
     comp <- selectReactiveComponent(input)
+    dates <- selectReactiveDates(input)
     selected_id <- values$df[which(values$df$selected & values$df$groep == geen_groep),'kit_id']
     show_input <-input_df[which(input_df$kit_id %in% selected_id),]    
     
@@ -405,8 +542,91 @@ function(input, output, session){
       calc_groep_mean() # berekent groepsgemiddeldes
       show_input <- merge(show_input,values$df_gem, all = T) }
     
-    try(percentileRose(selectByDate(mydata = show_input,start = values$startdatum, end = values$einddatum),
-                       pollutant = comp, wd = 'wd', type = 'kit_id', local.tz="Europe/Amsterdam", percentile = NA)) 
+    if(input$filter_rh){
+      
+      show_input_rh <- show_input[which(show_input$rh < 97 & show_input$rh != -999),]
+      
+      try(percentileRose(selectByDate(mydata = show_input_rh,start = dates()$start, end = dates()$end),
+                         pollutant = comp, limits= c(0,50), wd = 'wd', type = 'kit_id', local.tz="Europe/Amsterdam", percentile = NA)) 
+    }
     
+    else {
+      
+      try(percentileRose(selectByDate(mydata = show_input,start = dates()$start, end = dates()$end),
+                         pollutant = comp, limits= c(0,50), wd = 'wd', type = 'kit_id', local.tz="Europe/Amsterdam", percentile = NA)) 
+      
+      
+    }
   })  
+  
+  # Create gemiddelden barplot vanuit ggplot ----
+  output$overzichtplot <- renderPlot({
+    
+    comp <- selectReactiveComponent(input)
+    dates <- selectReactiveDates(input)
+    selected_id <- values$df[which(values$df$selected & values$df$groep == geen_groep),'kit_id']
+    show_input <-input_df[which(input_df$kit_id %in% selected_id),]
+    
+    # Als er groepen zijn geselecteerd, bereken dan het gemiddelde
+    if (length(unique(values$df$groep))>1){
+      calc_groep_mean() # berekent groepsgemiddeldes
+      show_input <- merge(show_input,values$df_gem, all = T) }
+    
+    # Selecteer de juiste tijdreeks als aangegeven bij de slider
+    show_input <- selectByDate(mydata = show_input, start = dates()$start, end = dates()$end)
+    
+    # Zet het dataframe om zodat ggplot ermee overweg kan
+    show_input_melt <- melt(show_input,id.vars = c("kit_id","date","rh"), measure.vars =  c(comp) )
+    
+    # Zet de tjidszone met winter/zomertijd aan
+    #attr(show_input_melt$date ,"tzone") <- 'GMT'
+    
+    date_format_tz <- function(format = "%m-%d %H:%M", tz = "GMT") {
+      function(x) format(x, format, tz=tz)
+    }
+    
+    ## Create array for the colours
+    # get the unique kit_id and the color
+    kit_kleur <- unique(values$df[which(values$df$selected),c('kit_id','kleur','groep')])
+    
+    # Als er een groep is, zorg voor 1 rij van de groep, zodat er maar 1 kleur is
+    if (length(unique(kit_kleur$groep)>1)){
+      kit_kleur[which(kit_kleur$groep != geen_groep),'kit_id'] <- kit_kleur[which(kit_kleur$groep != geen_groep),'groep']
+      kit_kleur <- unique(kit_kleur)
+    }
+    
+    # Sort by kit_id
+    kit_kleur_sort <- kit_kleur[order(kit_kleur$kit_id),]
+    # create colour array
+    kleur_array <- kit_kleur_sort$kleur
+    
+    # Genereren van de barplot met gemiddelden
+    library(Hmisc)
+    
+    if(input$filter_rh){
+      
+      show_input_melt_rh <- show_input_melt[which(show_input_melt$rh < 97 & show_input_melt$rh != -999),]
+      
+      ggplot(data=show_input_melt_rh, mapping=aes(x=kit_id, y=value, fill = kit_id)) + 
+        scale_fill_manual(values = kleur_array) +
+        stat_summary(fun.data=mean_sdl, geom="bar") +
+        labs(x = "kit_id", y = comp) +
+        theme_bw()
+    }
+    
+    else{
+      
+      ggplot(data=show_input_melt, mapping=aes(x=kit_id, y=value, fill = kit_id)) + 
+        scale_fill_manual(values = kleur_array) +
+        stat_summary(fun.data=mean_sdl, geom="bar") +
+        labs(x = "kit_id", y = comp) +
+        theme_bw()
+      
+    }
+    
+  })
+  
 }
+
+## ----------------------------------------------
+

@@ -13,7 +13,33 @@
 htmlTemplate("./www/template_samenmeten.wide.html",
              pageTitle=paste("Prototype Samen Analyseren tool: project ", projectnaam),
              
-             aboutSite=div(h3("Verantwoording"),
+             aboutSite=div(
+               
+               h3("Gebruik"),
+               
+               h5("Sensoren selecteren"),
+               p("Je kan één of meer sensoren selecteren door deze op de kaart aan te klikken. Je deselecteert een sensor door er nogmaals op te klikken. Ook kan je alle geselecteerde sensoren deselecteren door op de knop 'Reset selectie' te klikken."),
+               
+               h5("Sensoren groeperen"),
+               p("  Het is ook mogelijk een groep sensoren aan te maken. Meestal zeggen de metingen van een enkele sensor niet zo veel. 
+                 Door de metingen van meerdere sensoren te combineren, ontstaat er een duidelijker beeld. Zo kan je sensoren rondom één locatie, bijvoorbeeld een wijk of bron, groeperen.
+                 Geef de groep sensoren een naam. Zet vervolgens een vinkje in het vakje voor 'Maak een groep.' Vervolgens kan je een groepsselectie maken met de cirkel of het vierkant aan de linkerzijde van de kaart. Ook kan je meerdere sensoren los aanklikken.
+                 Als je een tweede groep wilt maken, klik dan het vinkje eerst weg. Nadat je een nieuwe naam invult, zet je weer een vinkje en kan je opnieuw sensoren naar keuze selecteren."),
+                   
+                   h5("De tijdrange aanpassen"),
+                   p("Met de schuifbalk onderaan het dashboard kan je tot op de dag nauwkeurig selecteren voor welke periode je de data wilt bekijken."),
+                   
+                   h5("Keuze tussen PM10 of PM2,5"),
+                   p("Linksonder kan je een keuze maken tussen PM10, de grovere fijnstofdeeltjes, en PM2,5, de kleinere fijnstofdeeltjes. Beide keuzes hebben het achtervoegsel '_kal', wat een afkorting is voor 'gekalibreerd'. Voor meer informatie, zie het kopje 'Gekalibreerde waarden'."),
+                   
+                   h5("Verschillende plots bekijken"),
+                   p("Als je één of meer sensoren en de gewenste periode heb geselecteerd, zijn er tabbladen waar je verschillende plots van de data kan bekijken. Voor elke plot wordt een korte toelichting met voorbeeld gegeven."),
+                   
+                   h5("Filteren van data met hoge luchtvochtigheid"),
+                   p("In deze tool is het mogelijk om de meetwaarden van uren waarbij de luchtvochtigheid 97% of hoger is, uit de dataset te filteren. Dit kan je doen door het vinkje voor het vakje 'Filter hoge rh' aan te zetten."),
+                   
+               
+               h3("Verantwoording"),
                            
                            p("Dit dashboard is door het ", a("RIVM", href = "https://rivm.nl", target = 'blank'), "ontwikkeld voor snelle analyse van sensordata.
                              Het maakt gebruik van de R-package",
@@ -83,6 +109,7 @@ htmlTemplate("./www/template_samenmeten.wide.html",
                 min = min(input_df$date), max = max(input_df$date)),
       dateInput("DateEind", label="Selecteer einde tijdreeks:", format='dd-mm-yyyy', value = max(input_df$date), 
                 min = min(input_df$date), max = max(input_df$date)),
+      checkboxInput('filter_rh','Filter hoge rh.', width = NULL, value = TRUE),
       
       br(),
 
@@ -106,12 +133,15 @@ htmlTemplate("./www/template_samenmeten.wide.html",
       leafletOutput("map", height = "300px"),
       # Output: Tabset voor openair plots, zie voor de inhoud het script: tabPanels.R
       tabsetPanel(type = "tabs",
-                  tpTimeplot(),
+                  tpGrafiek(),
                   tpKalender(),
                   tpTimevariation(),
+                  tpPolarPlot(),
                   tpPercentileRose(),
                   tpPollutionRose(),
-                  tpWindRose()
+                  tpWindRose(),
+                  tpOverzicht(),
+                  tpVerantwoording()
       )
       
     ) 
