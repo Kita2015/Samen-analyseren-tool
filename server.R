@@ -351,7 +351,6 @@ function(input, output, session){
   output$timeplot <- renderPlot({
     
     comp <- selectReactiveComponent(input)
-    dates <- selectReactiveDates(input)
     selected_id <- values$df[which(values$df$selected & values$df$groep == geen_groep),'kit_id']
     show_input <-input_df[which(input_df$kit_id %in% selected_id),]
     
@@ -363,12 +362,12 @@ function(input, output, session){
     # if / else statement om correctie lml data toe te voegen ----
     #alleen LML data <0 wordt getoond; dit om -999, -999.9 en -999.0 eruit te filteren
     if(comp == "pm10" || comp == "pm10_kal"){
-      try(timePlot(selectByDate(mydata = show_input[which(show_input$pm10_lml > 0),],start = dates()$start, end = dates()$end),
+      try(timePlot(selectByDate(mydata = show_input[which(show_input$pm10_lml > 0),],start = values$startdatum, end = values$einddatum),
                    pollutant = c(comp, "pm10_lml"), wd = "wd", type = "kit_id", local.tz="Europe/Amsterdam"))
       # Call in try() zodat er geen foutmelding wordt getoond als er geen enkele sensor is aangeklikt 
     }
     else {
-      try(timePlot(selectByDate(mydata = show_input[which(show_input$pm25_lml > 0),],start = dates()$start, end = dates()$end),
+      try(timePlot(selectByDate(mydata = show_input[which(show_input$pm25_lml > 0),],start = values$startdatum, end = values$einddatum),
                    pollutant = c(comp, "pm25_lml"), wd = "wd", type = "kit_id", local.tz="Europe/Amsterdam"))
       # Call in try() zodat er geen foutmelding wordt getoond als er geen enkele sensor is aangeklikt 
     }
@@ -378,7 +377,6 @@ function(input, output, session){
   output$calendar <- renderPlot({
     
     comp <- selectReactiveComponent(input)
-    dates <- selectReactiveDates(input)
     selected_id <- values$df[which(values$df$selected & values$df$groep == geen_groep),'kit_id']
     show_input <-input_df[which(input_df$kit_id %in% selected_id),]
     
@@ -391,13 +389,13 @@ function(input, output, session){
       
       show_input_rh <- show_input[which(show_input$rh < 97 & show_input$rh != -999),]    
       
-      try(calendarPlot(selectByDate(mydata = show_input_rh, start = dates()$start, end = dates()$end),
+      try(calendarPlot(selectByDate(mydata = show_input_rh, start = values$startdatum, end = values$einddatum),
                        pollutant = comp, limits= c(0,150), cols = 'Purples', local.tz="Europe/Amsterdam")) 
       # Call in try() zodat er geen foutmelding wordt getoond als er geen enkele sensor is aangeklikt 
     }
     
     else{
-      try(calendarPlot(selectByDate(mydata = show_input, start = dates()$start, end = dates()$end),
+      try(calendarPlot(selectByDate(mydata = show_input, start = values$startdatum, end = values$einddatum),
                        pollutant = comp, limits= c(0,150), cols = 'Purples', local.tz="Europe/Amsterdam")) 
       # Call in try() zodat er geen foutmelding wordt getoond als er geen enkele sensor is aangeklikt 
     }
@@ -407,7 +405,6 @@ function(input, output, session){
   output$timevariation <- renderPlot({
     
     comp <- selectReactiveComponent(input)
-    dates <- selectReactiveDates(input)
     selected_id <- values$df[which(values$df$selected & values$df$groep == geen_groep),'kit_id']
     show_input <-input_df[which(input_df$kit_id %in% selected_id),]
     
@@ -431,7 +428,7 @@ function(input, output, session){
     # create colour array
     kleur_array <- kit_kleur_sort$kleur
     
-    try(timeVariation(selectByDate(mydata = show_input, start = dates()$start, end = dates()$end),
+    try(timeVariation(selectByDate(mydata = show_input, start = values$startdatum, end = values$einddatum),
                       pollutant = comp, normalise = FALSE, group = "kit_id",
                       alpha = 0.1, cols = kleur_array, local.tz="Europe/Amsterdam",
                       ylim = c(0,NA))) 
@@ -443,7 +440,6 @@ function(input, output, session){
   output$polarplot <- renderPlot({
     
     comp <- selectReactiveComponent(input)
-    dates <- selectReactiveDates(input)
     selected_id <- values$df[which(values$df$selected & values$df$groep == geen_groep),'kit_id']
     show_input <-input_df[which(input_df$kit_id %in% selected_id),]    
     
@@ -456,13 +452,13 @@ function(input, output, session){
       
       show_input_rh <- show_input[which(show_input$rh < 97 & show_input$rh != -999),]
       
-      try(polarPlot(selectByDate(mydata = show_input_rh,start = dates()$start, end = dates()$end),
+      try(polarPlot(selectByDate(mydata = show_input_rh, start = values$startdatum, end = values$einddatum),
                     pollutant = comp, limits= c(0,50), wd = 'wd', type = 'kit_id' , local.tz="Europe/Amsterdam", cols = "default")) 
     }
     
     else{
       
-      try(polarPlot(selectByDate(mydata = show_input,start = dates()$start, end = dates()$end),
+      try(polarPlot(selectByDate(mydata = show_input, start = values$startdatum, end = values$einddatum),
                     pollutant = comp, limits= c(0,50), wd = 'wd', type = 'kit_id' , local.tz="Europe/Amsterdam", cols = "default")) 
       
     }
@@ -472,7 +468,6 @@ function(input, output, session){
   output$pollutionplot <- renderPlot({
     
     comp <- selectReactiveComponent(input)
-    dates <- selectReactiveDates(input)
     selected_id <- values$df[which(values$df$selected & values$df$groep == geen_groep),'kit_id']
     show_input <-input_df[which(input_df$kit_id %in% selected_id),]    
     
@@ -486,14 +481,14 @@ function(input, output, session){
       
       show_input_rh <- show_input[which(show_input$rh < 97 & show_input$rh != -999),]
       
-      try(pollutionRose(selectByDate(mydata = show_input_rh, start = dates()$start, end = dates()$end),
+      try(pollutionRose(selectByDate(mydata = show_input_rh, start = values$startdatum, end = values$einddatum),
                         pollutant = comp, limits= c(0,50), wd = 'wd', ws = 'ws', type = 'kit_id' , local.tz="Europe/Amsterdam", cols = "Purples", statistic = 'prop.mean',breaks=c(0,20,60,100), annotate = FALSE)) 
       
     }
     
     else{
       
-      try(pollutionRose(selectByDate(mydata = show_input,start = dates()$start, end = dates()$end),
+      try(pollutionRose(selectByDate(mydata = show_input, start = values$startdatum, end = values$einddatum),
                         pollutant = comp, limits= c(0,50),  wd = 'wd', ws = 'ws', type = 'kit_id' , local.tz="Europe/Amsterdam", cols = "Purples", statistic = 'prop.mean',breaks=c(0,20,60,100), annotate = FALSE)) 
     } 
   })
@@ -503,7 +498,6 @@ function(input, output, session){
   output$windplot <- renderPlot({
     
     comp <- selectReactiveComponent(input)
-    dates <- selectReactiveDates(input)
     selected_id <- values$df[which(values$df$selected & values$df$groep == geen_groep),'kit_id']
     show_input <-input_df[which(input_df$kit_id %in% selected_id),]    
     
@@ -516,14 +510,14 @@ function(input, output, session){
       
       show_input_rh <- show_input[which(show_input$rh < 97 & show_input$rh != -999),]
       
-      try(windRose(selectByDate(mydata = show_input_rh,start = dates()$start, end = dates()$end),
+      try(windRose(selectByDate(mydata = show_input_rh, start = values$startdatum, end = values$einddatum),
                    wd = 'wd', ws = 'ws', type = 'kit_id' , local.tz="Europe/Amsterdam", cols = "Purples", annotate = FALSE)) 
       # Call in try() zodat er geen foutmelding wordt getoond als er geen enkele sensor is aangeklikt 
     }
     
     else{
       
-      try(windRose(selectByDate(mydata = show_input,start = dates()$start, end = dates()$end),
+      try(windRose(selectByDate(mydata = show_input, start = values$startdatum, end = values$einddatum),
                    wd = 'wd', ws = 'ws', type = 'kit_id' , local.tz="Europe/Amsterdam", cols = "Purples", annotate = FALSE)) 
       
     }
@@ -533,7 +527,6 @@ function(input, output, session){
   output$percentileplot <- renderPlot({
     
     comp <- selectReactiveComponent(input)
-    dates <- selectReactiveDates(input)
     selected_id <- values$df[which(values$df$selected & values$df$groep == geen_groep),'kit_id']
     show_input <-input_df[which(input_df$kit_id %in% selected_id),]    
     
@@ -546,13 +539,13 @@ function(input, output, session){
       
       show_input_rh <- show_input[which(show_input$rh < 97 & show_input$rh != -999),]
       
-      try(percentileRose(selectByDate(mydata = show_input_rh,start = dates()$start, end = dates()$end),
+      try(percentileRose(selectByDate(mydata = show_input_rh, start = values$startdatum, end = values$einddatum),
                          pollutant = comp, limits= c(0,50), wd = 'wd', type = 'kit_id', local.tz="Europe/Amsterdam", percentile = NA)) 
     }
     
     else {
       
-      try(percentileRose(selectByDate(mydata = show_input,start = dates()$start, end = dates()$end),
+      try(percentileRose(selectByDate(mydata = show_input, start = values$startdatum, end = values$einddatum),
                          pollutant = comp, limits= c(0,50), wd = 'wd', type = 'kit_id', local.tz="Europe/Amsterdam", percentile = NA)) 
       
       
@@ -563,7 +556,6 @@ function(input, output, session){
   output$overzichtplot <- renderPlot({
     
     comp <- selectReactiveComponent(input)
-    dates <- selectReactiveDates(input)
     selected_id <- values$df[which(values$df$selected & values$df$groep == geen_groep),'kit_id']
     show_input <-input_df[which(input_df$kit_id %in% selected_id),]
     
@@ -573,7 +565,7 @@ function(input, output, session){
       show_input <- merge(show_input,values$df_gem, all = T) }
     
     # Selecteer de juiste tijdreeks als aangegeven bij de slider
-    show_input <- selectByDate(mydata = show_input, start = dates()$start, end = dates()$end)
+    show_input <- selectByDate(mydata = show_input, start = values$startdatum, end = values$einddatum)
     
     # Zet het dataframe om zodat ggplot ermee overweg kan
     show_input_melt <- melt(show_input,id.vars = c("kit_id","date","rh"), measure.vars =  c(comp) )
