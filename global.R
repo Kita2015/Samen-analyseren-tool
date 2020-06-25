@@ -43,8 +43,8 @@ source("selectReactiveComponent.R", local = TRUE)
 source("tabPanels.R", local = TRUE) 
 
 ## Initialise ----
-projectnaam <- "Boeren & Buren"
-file <- "HLL_voorbeeld_data.RDS" 
+projectnaam <- "Boeren en Buren"
+file <- "./benb_voorbeeld_data_df.RData" 
 
 #choices <- c( "PM10 - gekalibreerd", "PM2.5 - gekalibreerd","PM10", "PM2.5") #set up choices for shiny app
 choices <- c( "pm10_kal", "pm25_kal")
@@ -58,7 +58,7 @@ icons_stations <- iconList(
   lml = makeIcon("ionicons_analytics.svg", 15, 15))
 
 ## Inlezen van de data ----
-input_df <- readRDS(file)
+input_df <- get(load(file)) 
 
 ## Default locatie, kleur en label opzetten ----
 input_df$kit_id <- gsub('HLL_hl_', '', input_df$kit_id) #remove HLL-string from input_df for shorter label

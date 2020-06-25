@@ -19,7 +19,7 @@ function(input, output, session){
   output$map <- renderLeaflet({
     leaflet() %>% 
       addTiles() %>% 
-      setView(4.720130, 52.408370, zoom = 10) %>%
+      setView(6.036506,51.496805, zoom = 10) %>%
       addMarkers(icon = icons_stations["knmi"],data = knmi_stations, ~lon, ~lat, layerId = ~code, label = lapply(knmi_labels, HTML)) %>% 
       addMarkers(icon = icons_stations["lml"], data = lml_stations, ~lon, ~lat, layerId = ~code, label = lapply(lml_labels, HTML)) %>% 
       addCircleMarkers(data = sensor_unique, ~lon, ~lat, layerId = ~kit_id, label = lapply(sensor_labels, HTML), 
