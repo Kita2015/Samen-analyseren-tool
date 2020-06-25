@@ -277,10 +277,11 @@ function(input, output, session){
   output$huidig <- renderTable({
   huidig_df <- data.frame('Selectie' =values$df[which(values$df$huidig),'kit_id'])
   })
-  
-  # Create time plot vanuit ggplot ----
+
+
+  # Create time plot vanuit ggplot en plotly----
   output$grafiek <- renderPlotly({
-    
+
     comp <- selectReactiveComponent(input)
     selected_id <- values$df[which(values$df$selected & values$df$groep == geen_groep),'kit_id']
     show_input <-input_df[which(input_df$kit_id %in% selected_id),]
@@ -318,6 +319,9 @@ function(input, output, session){
     # create colour array
     kleur_array <- kit_kleur_sort$kleur
     
+    #als er nog geen sensor is geselecteerd:
+    #...
+    
     # Genereren van het line plot
     
     if(input$filter_rh){
@@ -341,6 +345,7 @@ function(input, output, session){
                  scale_x_datetime(labels = date_format_tz()) +
                  theme_bw())
       
+
     }
     
   })
