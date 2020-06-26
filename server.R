@@ -320,7 +320,7 @@ function(input, output, session){
     kleur_array <- kit_kleur_sort$kleur
     
     #als er nog geen sensor is geselecteerd:
-    #...
+    
     
     # Genereren van het line plot
     
@@ -335,7 +335,7 @@ function(input, output, session){
                  scale_x_datetime(labels = date_format_tz()) +
                  theme_bw())
       
-    }
+      }
     
     else{
       ggplotly(ggplot(data = show_input_melt, aes(x = date, y = value, colour = kit_id)) +

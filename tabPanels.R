@@ -14,7 +14,7 @@ tpGrafiek <- function(){
   library(shiny)
   
   tp <-  tabPanel("Tijdreeks",
-                  helpText("In deze grafiek kan je meerdere (groepen) sensoren en het LML-station vergelijken."),
+                  helpText("Selecteer een sensor. In deze grafiek kan je meerdere (groepen) sensoren en het LML-station vergelijken."),
                   plotlyOutput("grafiek"),
                   h4("Toelichting"),
                   p("Als je één of meerdere sensoren aanklikt, zie je een tijdreeks van de uurlijkse sensorwaarden voor de geselecteerde periode.
