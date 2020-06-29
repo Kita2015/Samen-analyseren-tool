@@ -321,29 +321,28 @@ function(input, output, session){
     
     #als er nog geen sensor is geselecteerd:
     
-    
     # Genereren van het line plot
     
     if(input$filter_rh){
       
       show_input_melt_rh <- show_input_melt[which(show_input_melt$rh < 97 & show_input_melt$rh != -999),]
       
-      ggplotly(ggplot(data = show_input_melt_rh, aes(x = date, y = value, colour = kit_id)) +
+      ggplot(data = show_input_melt_rh, aes(x = date, y = value, colour = kit_id)) +
                  geom_line() +
                  scale_color_manual(values = kleur_array) +
                  labs(x = "Tijd", y = comp) +
                  scale_x_datetime(labels = date_format_tz()) +
-                 theme_bw())
+                 theme_bw()
       
       }
     
     else{
-      ggplotly(ggplot(data = show_input_melt, aes(x = date, y = value, colour = kit_id)) +
+      ggplot(data = show_input_melt, aes(x = date, y = value, colour = kit_id)) +
                  geom_line() +
                  scale_color_manual(values = kleur_array) +
                  labs(x = "Tijd", y = comp) +
                  scale_x_datetime(labels = date_format_tz()) +
-                 theme_bw())
+                 theme_bw()
       
 
     }
