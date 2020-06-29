@@ -182,7 +182,7 @@ tpOverzicht <- function(){
   
   tp <-  tabPanel("Overzicht",
                   helpText("Per sensor of groep sensoren wordt het gemiddelde getoond."),
-                  plotOutput("overzichtplot"),
+                  plotlyOutput("overzichtplot"),
                   h4("Toelichting"),
                   p("Als je een sensor of groep sensoren selecteert, zie je het gemiddelde voor de geselecteerde tijdreeks. Vanaf een jaar data wordt het mogelijk om een jaargemiddelde concenetratie te berekenen.
                     ", style = "font-size:12px")

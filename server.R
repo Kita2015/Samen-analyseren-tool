@@ -292,7 +292,7 @@ function(input, output, session){
     if (dim(show_input)[1]){
       testvalidatie <- NULL}
     validate(testvalidatie)
-
+   
     # Als er groepen zijn geselecteerd, bereken dan het gemiddelde
     if (length(unique(values$df$groep))>1){
       calc_groep_mean() # berekent groepsgemiddeldes
@@ -564,7 +564,7 @@ function(input, output, session){
   })  
   
   # Create gemiddelden barplot vanuit ggplot ----
-  output$overzichtplot <- renderPlot({
+  output$overzichtplot <- renderPlotly({
     
     comp <- selectReactiveComponent(input)
     selected_id <- values$df[which(values$df$selected & values$df$groep == geen_groep),'kit_id']
