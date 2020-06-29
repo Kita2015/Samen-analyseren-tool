@@ -286,6 +286,13 @@ function(input, output, session){
     selected_id <- values$df[which(values$df$selected & values$df$groep == geen_groep),'kit_id']
     show_input <-input_df[which(input_df$kit_id %in% selected_id),]
     
+    # Stukje code om te zorgen dat als er geen gegevens zijn, 
+    # er geen error is in de plot
+    testvalidatie <- F
+    if (dim(show_input)[1]){
+      testvalidatie <- NULL}
+    validate(testvalidatie)
+
     # Als er groepen zijn geselecteerd, bereken dan het gemiddelde
     if (length(unique(values$df$groep))>1){
       calc_groep_mean() # berekent groepsgemiddeldes
@@ -357,7 +364,7 @@ function(input, output, session){
     comp <- selectReactiveComponent(input)
     selected_id <- values$df[which(values$df$selected & values$df$groep == geen_groep),'kit_id']
     show_input <-input_df[which(input_df$kit_id %in% selected_id),]
-    
+
     # Als er groepen zijn geselecteerd, bereken dan het gemiddelde
     if (length(unique(values$df$groep))>1){
       calc_groep_mean() # berekent groepsgemiddeldes
