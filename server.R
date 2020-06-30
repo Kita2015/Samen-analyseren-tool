@@ -466,13 +466,13 @@ function(input, output, session){
       show_input_rh <- show_input[which(show_input$rh < 97 & show_input$rh != -999),]
       
       try(polarPlot(selectByDate(mydata = show_input_rh, start = values$startdatum, end = values$einddatum),
-                    pollutant = comp, limits= c(0,50), wd = 'wd', type = 'kit_id' , local.tz="Europe/Amsterdam", cols = "default")) 
+                    pollutant = comp, limits= c(0,60), wd = 'wd', type = 'kit_id' , local.tz="Europe/Amsterdam", cols = "default")) 
     }
     
     else{
       
       try(polarPlot(selectByDate(mydata = show_input, start = values$startdatum, end = values$einddatum),
-                    pollutant = comp, limits= c(0,50), wd = 'wd', type = 'kit_id' , local.tz="Europe/Amsterdam", cols = "default")) 
+                    pollutant = comp, limits= c(0,60), wd = 'wd', type = 'kit_id' , local.tz="Europe/Amsterdam", cols = "default")) 
       
     }
   })
