@@ -140,8 +140,8 @@ htmlTemplate("./www/template_samenmeten.wide.html",
                   tpPercentileRose(),
                   tpPollutionRose(),
                   tpWindRose(),
-                  tpOverzicht(),
-                  tpVerantwoording()
+                  tpOverzicht()
+                  
       )
       
     ) 
