@@ -288,10 +288,12 @@ function(input, output, session){
     
     # Stukje code om te zorgen dat als er geen gegevens zijn, 
     # er geen error is in de plot
-    testvalidatie <- F
-    if (dim(show_input)[1]){
-      testvalidatie <- NULL}
-    validate(testvalidatie)
+    # testvalidatie <- F
+    # if (dim(show_input)[1]){
+    #   testvalidatie <- NULL}
+    # validate(testvalidatie)
+    
+    validate(need(selected_id,"Selecteer een sensor."))
    
     # Als er groepen zijn geselecteerd, bereken dan het gemiddelde
     if (length(unique(values$df$groep))>1){
@@ -604,7 +606,7 @@ function(input, output, session){
     kleur_array <- kit_kleur_sort$kleur
     
     # Genereren van de barplot met gemiddelden
-    library(Hmisc)
+
     
     if(input$filter_rh){
       
@@ -612,16 +614,17 @@ function(input, output, session){
       
       ggplot(data=show_input_melt_rh, mapping=aes(x=kit_id, y=value, fill = kit_id)) + 
         scale_fill_manual(values = kleur_array) +
-        stat_summary(fun.data=mean_sdl, geom="bar") +
+        stat_summary(fun = "mean", geom = "bar") +
         labs(x = "kit_id", y = comp) +
         theme_bw()
+
     }
     
     else{
       
       ggplot(data=show_input_melt, mapping=aes(x=kit_id, y=value, fill = kit_id)) + 
         scale_fill_manual(values = kleur_array) +
-        stat_summary(fun.data=mean_sdl, geom="bar") +
+        stat_summary(fun = "mean", geom = "bar") +
         labs(x = "kit_id", y = comp) +
         theme_bw()
       

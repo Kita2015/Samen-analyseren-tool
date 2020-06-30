@@ -28,7 +28,6 @@ library(plotly)
 library(ggplot2)
 library(geoshaper)
 library(scales)
-library(Hmisc)
 library(gridExtra)
 library(plotly)
 library(reshape2)
@@ -60,8 +59,12 @@ icons_stations <- iconList(
 ## Inlezen van de data ----
 input_df <- get(load(file)) 
 
+#rond alle PM-waarden af op één decimaal
+input_df$pm10_kal <- round(input_df$pm10_kal,digits = 1)
+input_df$pm25_kal <- round(input_df$pm25_kal,digits = 1)
+
 ## Default locatie, kleur en label opzetten ----
-input_df$kit_id <- gsub('HLL_hl_', '', input_df$kit_id) #remove HLL-string from input_df for shorter label
+#input_df$kit_id <- gsub('HLL_hl_', '', input_df$kit_id) #remove HLL-string from input_df for shorter label
 
 # Voor de sensormarkers: locatie, label en kleur etc. Per sensor één unieke locatie
 sensor_unique <- aggregate(input_df[,c('lat','lon')], list(input_df$kit_id), FUN = mean) # gemiddelde om per sensor een latlon te krijgen
