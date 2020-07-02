@@ -18,7 +18,7 @@ tpGrafiek <- function(){
                   plotlyOutput("grafiek"),
                   h4("Toelichting"),
                   p("Als je één of meerdere sensoren aanklikt, zie je een tijdreeks van de uurlijkse sensorwaarden voor de geselecteerde periode.
-                    Deze waarden kan je vergeleken met station Vredepeel of Horst a/d Maas van het landelijk luchtmeetnet.
+                    Deze waarden kan je vergeleken met station Vredepeel of Horst a/d Maas van het landelijk luchtmeetnet. Zo wordt het mogelijk om een gebiedsgemiddelde te vergelijken met de metingen van een referentiestation.
                     Op de x-as zie je de geselecteerde tijdsperiode; op de y-as staat de concentratie PM10 of PM2,5 in ug/m3
                     ",
                     style = "font-size:12px")
