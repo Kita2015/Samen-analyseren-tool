@@ -138,7 +138,7 @@ htmlTemplate("./www/template_samenmeten.wide.html",
       )
       
     ) 
-    ),
+    )
   )
 )
 )
