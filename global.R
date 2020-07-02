@@ -60,8 +60,8 @@ icons_stations <- iconList(
 input_df <- get(load(file)) 
 
 #rond alle PM-waarden af op één decimaal
-input_df$pm10_kal <- round(input_df$pm10_kal,digits = 1)
-input_df$pm25_kal <- round(input_df$pm25_kal,digits = 1)
+input_df$pm10_kal <- round(input_df$pm10_kal,digits = 0)
+input_df$pm25_kal <- round(input_df$pm25_kal,digits = 0)
 
 ## Default locatie, kleur en label opzetten ----
 #input_df$kit_id <- gsub('HLL_hl_', '', input_df$kit_id) #remove HLL-string from input_df for shorter label
