@@ -1,9 +1,9 @@
 ## ---------------------------------------------------------
-## R Script voor interactieve data-analyse van sensordata, met o.a. R package openair, leaflet en shiny.
-## Deze Samen Analyseren Tool bestaat uit meerdere scripts. Dit is het Global.R script.
-## Auteur: Henri de Ruiter en Elma Tenner namens het Samen Meten Team, RIVM. 
-## Laatste versie: april 2020
-## Contact: info@samenmeten.nl 
+## R Script voor interactieve data-analyse van sensordata, met o.a. R package openair, ggplot, plotly, leaflet en shiny.
+## Deze Samen Analyseren Tool bestaat uit meerdere scripts. Dit is het global.R script.
+## Auteur: Henri de Ruiter, Elma Tenner, Christa Blokhuis namens het Samen Meten Team, RIVM. 
+## Laatste versie: juli 2020
+## Contact: samenmeten@rivm.nl
 ## ---------------------------------------------------------
 ## Opmerkingen: 
 ## 

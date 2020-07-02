@@ -1,9 +1,9 @@
 ## ---------------------------------------------------------
-## R Script voor interactieve data-analyse van sensordata, met o.a. R package openair, leaflet en shiny.
+## R Script voor interactieve data-analyse van sensordata, met o.a. R package openair, ggplot, plotly, leaflet en shiny.
 ## Deze Samen Analyseren Tool bestaat uit meerdere scripts. Dit is het ui.R script.
-## Auteur: Henri de Ruiter en Elma Tenner namens het Samen Meten Team, RIVM. 
-## Laatste versie: april 2020
-## Contact: info@samenmeten.nl 
+## Auteur: Henri de Ruiter, Elma Tenner, Christa Blokhuis namens het Samen Meten Team, RIVM. 
+## Laatste versie: juli 2020
+## Contact: samenmeten@rivm.nl
 ## ---------------------------------------------------------
 ## Opmerkingen: 
 ## Het eerste gedeelte bevat de opmaak/styling
@@ -17,26 +17,19 @@ htmlTemplate("./www/template_samenmeten.wide.html",
                
                h3("Gebruik"),
                
-               h5("Sensoren selecteren"),
-               p("Je kan één of meer sensoren selecteren door deze op de kaart aan te klikken. Je deselecteert een sensor door er nogmaals op te klikken. Ook kan je alle geselecteerde sensoren deselecteren door op de knop 'Reset selectie' te klikken."),
+               p("De Samen Analyseren Tool voor het project ", a("Boeren & Buren", href = "https://www.rivm.nl/boeren-en-buren", target = 'blank'), "van het ", a("RIVM", href = "https://www.rivm.nl", target = 'blank'), "is gebaseerd op de Samen Analyseren Tool."),
                
-               h5("Sensoren groeperen"),
-               p("  Het is ook mogelijk een groep sensoren aan te maken. Meestal zeggen de metingen van een enkele sensor niet zo veel. 
-                 Door de metingen van meerdere sensoren te combineren, ontstaat er een duidelijker beeld. Zo kan je sensoren rondom één locatie, bijvoorbeeld een wijk of bron, groeperen.
-                 Geef de groep sensoren een naam. Zet vervolgens een vinkje in het vakje voor 'Maak een groep.' Vervolgens kan je een groepsselectie maken met de cirkel of het vierkant aan de linkerzijde van de kaart. Ook kan je meerdere sensoren los aanklikken.
-                 Als je een tweede groep wilt maken, klik dan het vinkje eerst weg. Nadat je een nieuwe naam invult, zet je weer een vinkje en kan je opnieuw sensoren naar keuze selecteren."),
-                   
-                   h5("De tijdrange aanpassen"),
-                   p("Met de schuifbalk onderaan het dashboard kan je tot op de dag nauwkeurig selecteren voor welke periode je de data wilt bekijken."),
-                   
-                   h5("Keuze tussen PM10 of PM2,5"),
-                   p("Linksonder kan je een keuze maken tussen PM10, de grovere fijnstofdeeltjes, en PM2,5, de kleinere fijnstofdeeltjes. Beide keuzes hebben het achtervoegsel '_kal', wat een afkorting is voor 'gekalibreerd'. Voor meer informatie, zie het kopje 'Gekalibreerde waarden'."),
-                   
-                   h5("Verschillende plots bekijken"),
-                   p("Als je één of meer sensoren en de gewenste periode heb geselecteerd, zijn er tabbladen waar je verschillende plots van de data kan bekijken. Voor elke plot wordt een korte toelichting met voorbeeld gegeven."),
-                   
-                   h5("Filteren van data met hoge luchtvochtigheid"),
-                   p("In deze tool is het mogelijk om de meetwaarden van uren waarbij de luchtvochtigheid 97% of hoger is, uit de dataset te filteren. Dit kan je doen door het vinkje voor het vakje 'Filter hoge rh' aan te zetten."),
+               p("In de ", a("handleiding", href = "https://www.samenmetenaanluchtkwaliteit.nl/dataportaal/samen-analyseren-tool", target = 'blank'), "vind je meer informatie over het algemene gebruik van de Samen Analyseren Tool."),
+               
+               h4("Extra functionaliteiten"),
+               
+               p("In deze tool voor het project Boeren & Buren zijn zijn drie extra plotmogelijkheden toegevoegd. 
+                 Zo is het mogelijk om onder de tab 'Tijdreeks' meerdere sensoren of LML-stations te plotten.
+                 Onder de tab 'Polarplot' is het mogelijk om van één of meerdere sensoren de gemeten concentraties te plotten in relatie tot de windrichting en -snelheid.
+                 Onder de tab 'Overzicht' is het mogelijk om het gemiddelde over de gehele geselecteerde tijdsperiode te plotten.
+                 Een meer uitgebreide uitleg is te vinden in de 'Toelichting' onderaan elke tab."),
+               p("In deze tool is het verder mogelijk om de meetwaarden van uren waarbij de luchtvochtigheid 97% of hoger is, uit de dataset te filteren. Dit kan je doen door het vinkje voor het vakje 'Filter hoge rh' aan te zetten."),
+              
                    
                
                h3("Verantwoording"),
