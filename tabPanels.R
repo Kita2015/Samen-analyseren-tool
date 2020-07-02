@@ -108,7 +108,8 @@ tpPolarPlot<- function(){
                     Het kleurverloop in de legenda geeft de concentratie PM aan. Op dit moment worden de kleuren gekozen op basis van een schaal van 0 tot 50 ug/m3. 
                     Lage concentraties worden donkerblauw; hoge concentraties worden donkerrood.
                     Voorbeeld: een rode kleur aan de rechterbuitenrand van de kleurvlek geeft aan dat er bij hogere windsnelheid uit het oosten, hogere concentraties worden gemeten.
-                    Let op: het kan soms even duren voordat de grafiek zichtbaar is.", 
+                    Het kan soms even duren voordat de grafiek zichtbaar is.
+                    Let op: voor PM10 wordt een schaal gebruikt van 0 tm/ 60 ug/m3; voor PM25 wordt een schaal gebruikt van 0 t/m 30 ug/mc", 
                     style = "font-size:12px")
                   
   )
