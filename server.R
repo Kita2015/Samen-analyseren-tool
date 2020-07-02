@@ -610,21 +610,30 @@ function(input, output, session){
     
     if(input$filter_rh){
       
+      library(withr)
+      
       show_input_melt_rh <- show_input_melt[which(show_input_melt$rh < 97 & show_input_melt$rh != -999),]
       
-      ggplot(data=show_input_melt_rh, mapping=aes(x=kit_id, y=value, fill = kit_id)) + 
+      p <- ggplot(data=show_input_melt_rh, mapping=aes(x=kit_id, y=value, fill = kit_id)) + 
         scale_fill_manual(values = kleur_array) +
-        stat_summary(fun = "mean", geom = "bar") +
+        geom_bar(stat = "summary", fun.y = "mean") +
+        #stat_summary(fun = "mean", geom = "bar") +
         labs(x = "kit_id", y = comp) +
         theme_bw()
+      
+      subplot(with_options(list(digits = 2), ggplotly(p)))
+      #digits 2 geeft gehele natuurlijke getallen; digits 3 geeft twee decimalen achter de komma
+
+
 
     }
     
     else{
       
-      ggplot(data=show_input_melt, mapping=aes(x=kit_id, y=value, fill = kit_id)) + 
+      p <- ggplot(data=show_input_melt, mapping=aes(x=kit_id, y=value, fill = kit_id)) + 
         scale_fill_manual(values = kleur_array) +
-        stat_summary(fun = "mean", geom = "bar") +
+        geom_bar(stat = "summary", fun.y = "mean") +
+        #stat_summary(fun = "mean", geom = "bar") 
         labs(x = "kit_id", y = comp) +
         theme_bw()
       
