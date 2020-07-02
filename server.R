@@ -616,26 +616,23 @@ function(input, output, session){
       
       p <- ggplot(data=show_input_melt_rh, mapping=aes(x=kit_id, y=value, fill = kit_id)) + 
         scale_fill_manual(values = kleur_array) +
-        geom_bar(stat = "summary", fun.y = "mean") +
-        #stat_summary(fun = "mean", geom = "bar") +
+        geom_bar(stat = "summary", fun = "mean") +
         labs(x = "kit_id", y = comp) +
         theme_bw()
       
-      subplot(with_options(list(digits = 2), ggplotly(p)))
-      #digits 2 geeft gehele natuurlijke getallen; digits 3 geeft twee decimalen achter de komma
-
-
-
+      subplot(with_options(list(digits = 1), ggplotly(p)))
+      
     }
     
     else{
       
       p <- ggplot(data=show_input_melt, mapping=aes(x=kit_id, y=value, fill = kit_id)) + 
         scale_fill_manual(values = kleur_array) +
-        geom_bar(stat = "summary", fun.y = "mean") +
-        #stat_summary(fun = "mean", geom = "bar") 
+        geom_bar(stat = "summary", fun = "mean") +
         labs(x = "kit_id", y = comp) +
         theme_bw()
+      
+      subplot(with_options(list(digits = 1), ggplotly(p)))
       
     }
     
