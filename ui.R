@@ -51,8 +51,8 @@ htmlTemplate("./www/template_samenmeten.wide.html",
                                a("Samen Meten database.",
                                  href = "https://samenmeten.rivm.nl/dataportaal/", target = 'blank'),
                                "De sensormetingen die in dit prototype gevisualiseerd worden, zijn gedaan met goedkope fijnstofsensoren van het project",
-                               a("Hollandse Luchten.",
-                                 href = "https://hollandseluchten.waag.org/", target = 'blank'),
+                               a("Boeren en Buren.",
+                                 href = "https://www.rivm.nl/boeren-en-buren", target = 'blank'),
                                "De gegevens worden eens per maand ge-update. De getoonde waarden geven een indicatie van de fijnstofconcentratie. 
                                De data zijn niet geschikt om te toetsen aan grenswaarden."
                              ),
@@ -69,8 +69,7 @@ htmlTemplate("./www/template_samenmeten.wide.html",
         We krijgen steeds meer begrip van situaties waarin sensoren – ook na kalibratie – minder betrouwbare waarden geven. 
         Dit zijn bijvoorbeeld situaties met zeer hoge luchtvochtigheid (vanaf 97 à 98% zoals gemeten op KNMI stations). 
         Met name in de wintermaanden in de nacht en vroege ochtend kan de luchtvochtigheid zeer hoog kan zijn. 
-        Maar het kan ook gaan om sensoren die altijd of vaak afwijken van de patronen die andere sensoren laten zien.  
-        Het is op dit moment nog niet mogelijk om de meetwaarden van deze uren of sensoren uit de gegevens te filteren. Daar werken we wel aan.
+        Maar het kan ook gaan om sensoren die altijd of vaak afwijken van de patronen die andere sensoren laten zien.
         "
                              )),
                            h3("Nieuw in deze tool"),

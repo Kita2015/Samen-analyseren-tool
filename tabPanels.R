@@ -105,11 +105,11 @@ tpPolarPlot<- function(){
                   p("Als je een sensor aanklikt, wordt een polarplot getoond.
                     Deze toont de variatie in de gemiddelde concentraties van PM10 of PM25 op basis van windrichting en -snelheid.
                     Hierdoor is het mogelijk om inzicht te krijgen in de windrichtingen waarbij hoge en lage concentraties gemeten worden. Dit geeft inzicht in of bronnen dichtbij zijn, of dat er sprake is van grootschalige patronen. De grijze, gestreepte cirkels geven de windsnelheid aan.
-                    Het kleurverloop in de legenda geeft de concentratie PM aan. Op dit moment worden de kleuren gekozen op basis van een schaal van 0 tot 50 ug/m3. 
+                    Het kleurverloop in de legenda geeft de concentratie PM aan. 
                     Lage concentraties worden donkerblauw; hoge concentraties worden donkerrood.
                     Voorbeeld: een rode kleur aan de rechterbuitenrand van de kleurvlek geeft aan dat er bij hogere windsnelheid uit het oosten, hogere concentraties worden gemeten.
                     Het kan soms even duren voordat de grafiek zichtbaar is.
-                    Let op: voor PM10 wordt een schaal gebruikt van 0 tm/ 60 ug/m3; voor PM25 wordt een schaal gebruikt van 0 t/m 30 ug/mc", 
+                    Let op: voor PM10 wordt een schaal gebruikt van 0 tm/ 60 ug/m3; voor PM25 wordt een schaal gebruikt van 0 t/m 30 ug/m3", 
                     style = "font-size:12px")
                   
   )
@@ -130,8 +130,8 @@ tpWindRose<- function(){
                     Deze windroos laat de windsnelheid en -richting zien van het dichtstbijzijnde KNMI-station. Voor elke windsector toont de 
                     grafiek in hoeveel procent van de tijd de wind vanuit die richting waaide.  
                     De gekleurde blokken geven de windsnelheid aan. Bijvoorbeeld: wanneer de wind voornamelijk uit het zuidwesten komt, 
-                    ziet u de langste blokken linksonder (tussen zuid en west in). Als u wilt weten hoe hard de wind waaide, 
-                    bekijkt u de kleur van de blokken. Hoe donkerder de kleur, hoe harder de wind.",
+                    zie je de langste blokken linksonder (tussen zuid en west in). Als je wilt weten hoe hard de wind waaide, 
+                    bekijk je de kleur van de blokken. Hoe donkerder de kleur, hoe harder de wind.",
                     style = "font-size:12px")
   )
   
@@ -150,7 +150,7 @@ tpPercentileRose<- function(){
                   h4("Toelichting"),
                   p("Als je een sensor aanklikt, wordt een pollutieroos getoond. 
                     Deze toont per windsector het gemiddelde van de sensormetingen wanneer de wind uit die richting waaide.
-                    Voorbeeld: als aan de rechterbovenzijde van de grafiek de grijze lijntjes op de streep voor 20 ug/m3 ligt en aan de linkerbovenzijde op 10 ug/m3, dan betekent dit dat bij wind van het noordoosten de concenetraties hoger zijn dan bij wind vanuit het noordwesten.",
+                    Voorbeeld: als aan de rechterbovenzijde van de grafiek de grijze lijntjes op de streep voor 20 ug/m3 ligt en aan de linkerbovenzijde op 10 ug/m3, dan betekent dit dat bij wind van het noordoosten de concentraties hoger zijn dan bij wind vanuit het noordwesten.",
                     style = "font-size:12px")
                   
   )
