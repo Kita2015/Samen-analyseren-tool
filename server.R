@@ -640,7 +640,7 @@ function(input, output, session){
   #       labs(x = "kit_id", y = comp) +
   #       theme_bw()
   #     
-  #     subplot(with_options(list(digits = 1), ggplotly(p)))
+  #     subplot(with_options(list(digits = 1), ggplotly(p)), titleX = TRUE, shareY = TRUE)
   #     
   #   }
   #   
@@ -652,7 +652,7 @@ function(input, output, session){
   #       labs(x = "kit_id", y = comp) +
   #       theme_bw()
   #     
-  #     subplot(with_options(list(digits = 1), ggplotly(p)))
+  #     subplot(with_options(list(digits = 1), ggplotly(p)), titleX = TRUE, shareY = TRUE)
   #     
   #   }
   #   
