@@ -617,12 +617,7 @@ function(input, output, session){
     
     # Genereren van de barplot met gemiddelden
 
-    
-    if(input$filter_rh){
-      
-      library(withr)
-      
-      show_input_melt_rh <- show_input_melt[which(show_input_melt$rh < 97 & show_input_melt$rh != -999),]
+    show_input_melt_rh <- show_input_melt[which(show_input_melt$rh <= input$rh_filter & show_input_melt$rh != -999),]
       
       p <- ggplot(data=show_input_melt_rh, mapping=aes(x=kit_id, y=value, fill = kit_id)) + 
         scale_fill_manual(values = kleur_array) +
@@ -630,22 +625,37 @@ function(input, output, session){
         labs(x = "kit_id", y = comp) +
         theme_bw()
       
-      subplot(with_options(list(digits = 1), ggplotly(p)))
+      subplot(with_options(list(digits = 1), ggplotly(p)), titleX = TRUE, shareY = TRUE)
       
-    }
-    
-    else{
-      
-      p <- ggplot(data=show_input_melt, mapping=aes(x=kit_id, y=value, fill = kit_id)) + 
-        scale_fill_manual(values = kleur_array) +
-        geom_bar(stat = "summary", fun = "mean") +
-        labs(x = "kit_id", y = comp) +
-        theme_bw()
-      
-      subplot(with_options(list(digits = 1), ggplotly(p)))
-      
-    }
-    
+  
+  # if(input$filter_rh){
+  #     
+  #     library(withr)
+  #     
+  #     show_input_melt_rh <- show_input_melt[which(show_input_melt$rh < 97 & show_input_melt$rh != -999),]
+  #     
+  #     p <- ggplot(data=show_input_melt_rh, mapping=aes(x=kit_id, y=value, fill = kit_id)) + 
+  #       scale_fill_manual(values = kleur_array) +
+  #       geom_bar(stat = "summary", fun = "mean") +
+  #       labs(x = "kit_id", y = comp) +
+  #       theme_bw()
+  #     
+  #     subplot(with_options(list(digits = 1), ggplotly(p)))
+  #     
+  #   }
+  #   
+  #   else{
+  #     
+  #     p <- ggplot(data=show_input_melt, mapping=aes(x=kit_id, y=value, fill = kit_id)) + 
+  #       scale_fill_manual(values = kleur_array) +
+  #       geom_bar(stat = "summary", fun = "mean") +
+  #       labs(x = "kit_id", y = comp) +
+  #       theme_bw()
+  #     
+  #     subplot(with_options(list(digits = 1), ggplotly(p)))
+  #     
+  #   }
+  #   
   })
   
 }
