@@ -332,30 +332,40 @@ function(input, output, session){
     
     # Genereren van het line plot
     
-    if(input$filter_rh){
-      
-      show_input_melt_rh <- show_input_melt[which(show_input_melt$rh < 97 & show_input_melt$rh != -999),]
-      
-      ggplot(data = show_input_melt_rh, aes(x = date, y = value, colour = kit_id)) +
-                 geom_line() +
-                 scale_color_manual(values = kleur_array) +
-                 labs(x = "Tijd", y = comp) +
-                 scale_x_datetime(labels = date_format_tz()) +
-                 theme_bw()
-      
-      }
+    show_input_melt_rh <- show_input_melt[which(show_input_melt$rh <= input$rh_filter & show_input_melt$rh != -999),]
     
-    else{
-      ggplot(data = show_input_melt, aes(x = date, y = value, colour = kit_id)) +
-                 geom_line() +
-                 scale_color_manual(values = kleur_array) +
-                 labs(x = "Tijd", y = comp) +
-                 scale_x_datetime(labels = date_format_tz()) +
-                 theme_bw()
-      
-
-    }
+    ggplot(data = show_input_melt_rh, aes(x = date, y = value, colour = kit_id)) +
+      geom_line() +
+      scale_color_manual(values = kleur_array) +
+      labs(x = "Tijd", y = comp) +
+      scale_x_datetime(labels = date_format_tz()) +
+      theme_bw()
     
+    
+    # if(input$filter_rh){
+    #   
+    #   show_input_melt_rh <- show_input_melt[which(show_input_melt$rh < rh_filter & show_input_melt$rh != -999),]
+    #   
+    #   ggplot(data = show_input_melt_rh, aes(x = date, y = value, colour = kit_id)) +
+    #              geom_line() +
+    #              scale_color_manual(values = kleur_array) +
+    #              labs(x = "Tijd", y = comp) +
+    #              scale_x_datetime(labels = date_format_tz()) +
+    #              theme_bw()
+    #   
+    #   }
+    # 
+    # else{
+    #   ggplot(data = show_input_melt, aes(x = date, y = value, colour = kit_id)) +
+    #              geom_line() +
+    #              scale_color_manual(values = kleur_array) +
+    #              labs(x = "Tijd", y = comp) +
+    #              scale_x_datetime(labels = date_format_tz()) +
+    #              theme_bw()
+    #   
+    # 
+    # }
+    # 
   })
   
   ###

@@ -101,7 +101,8 @@ htmlTemplate("./www/template_samenmeten.wide.html",
                 min = min(input_df$date), max = max(input_df$date)),
       dateInput("DateEind", label="Selecteer einde tijdreeks:", format='dd-mm-yyyy', value = max(input_df$date), 
                 min = min(input_df$date), max = max(input_df$date)),
-      checkboxInput('filter_rh','Filter hoge rh.', width = NULL, value = TRUE),
+      numericInput('rh_filter', label = 'Filter o.b.v luchtvochtigheid', value = 100, min = 0, max = 100, step = 1),
+      #checkboxInput('filter_rh','Filter hoge rh.', width = NULL, value = TRUE),
       
       br(),
 
