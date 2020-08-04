@@ -43,7 +43,7 @@ source("tabPanels.R", local = TRUE)
 
 ## Initialise ----
 projectnaam <- "Boeren en Buren"
-file <- "./benb_voorbeeld_data_df.RData" 
+file <- "/r-schijf/S020004 Boeren en Buren/4_Projectbestanden/WP4 Samen meten/dataanalyse/RData_bestanden/benb_voorbeeld_data_df.RData"
 
 #choices <- c( "PM10 - gekalibreerd", "PM2.5 - gekalibreerd","PM10", "PM2.5") #set up choices for shiny app
 choices <- c( "pm10_kal", "pm25_kal")
